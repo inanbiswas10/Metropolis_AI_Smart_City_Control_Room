@@ -1,0 +1,38 @@
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment variables (API keys)
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Raw data - not tracked, only the folder placeholder is.
+# Processed data IS committed - Streamlit Cloud only has access
+# to what's actually on GitHub, learned that the hard way in Project 1.
+data/raw/*
+!data/raw/.gitkeep
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Pytest cache
+.pytest_cache/

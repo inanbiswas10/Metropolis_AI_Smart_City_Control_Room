@@ -1,0 +1,17 @@
+# Core data processing
+pandas
+numpy
+
+# Live data feeds
+requests
+python-dotenv
+
+# Web app / dashboard
+streamlit
+
+# Visualization
+plotly
+pydeck
+
+# Utilities
+openpyxl
