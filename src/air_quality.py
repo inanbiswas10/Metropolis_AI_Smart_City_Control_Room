@@ -19,14 +19,11 @@ load_dotenv()
 
 OPENAQ_API_KEY = os.getenv("OPENAQ_API_KEY")
 
-# Manhattan, NYC
 LATITUDE = 40.7128
 LONGITUDE = -74.0060
 SEARCH_RADIUS_METERS = 25000
 MAX_STATIONS = 5
 
-# A station must have reported within this window to count as "live"
-# rather than a dead sensor that's just still listed nearby
 RECENCY_WINDOW = timedelta(hours=48)
 
 
@@ -41,7 +38,7 @@ def _find_active_stations():
     params = {
         "coordinates": f"{LATITUDE},{LONGITUDE}",
         "radius": SEARCH_RADIUS_METERS,
-        "limit": 20,  # cast a wider net before filtering for recency
+        "limit": 20,
     }
 
     response = requests.get(url, headers=headers, params=params, timeout=10)
@@ -56,11 +53,13 @@ def _find_active_stations():
         if not last_seen_str:
             continue
 
-        last_seen = datetime.fromisoformat(last_seen_str.replace("Z", "+00:00"))
+        # Python 3.11+ parses a trailing "Z" directly - no manual string
+        # replacement needed, which also removes the exact fragile
+        # string literal that got corrupted above
+        last_seen = datetime.fromisoformat(last_seen_str)
         if last_seen >= cutoff:
             active.append(station)
 
-    # Results already come sorted by distance - closest active stations first
     return active[:MAX_STATIONS]
 
 
@@ -83,9 +82,6 @@ def get_air_quality_snapshot():
             response.raise_for_status()
             readings_raw = response.json()["results"]
 
-            # Match each raw reading back to its parameter name/units via
-            # the station's own sensor list, since /latest only gives a
-            # sensorsId, not the pollutant name directly
             sensor_lookup = {s["id"]: s["parameter"] for s in station["sensors"]}
 
             readings = []
@@ -108,9 +104,6 @@ def get_air_quality_snapshot():
             results.append({"station": station["name"], "error": str(e)})
 
         except KeyError as e:
-            # First time hitting this specific endpoint - if a field name
-            # doesn't match what's expected, show the raw response so we
-            # can fix it based on real data instead of guessing again
             print(f"\nUnexpected response shape for {station['name']} - raw response:")
             print(response.text)
             results.append({"station": station["name"], "error": f"KeyError: {e}"})
