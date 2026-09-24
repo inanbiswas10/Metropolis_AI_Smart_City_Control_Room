@@ -1,7 +1,3 @@
-# Core data processing
-pandas
-numpy
-
 # Live data feeds
 requests
 python-dotenv
@@ -10,8 +6,4 @@ python-dotenv
 streamlit
 
 # Visualization
-plotly
 pydeck
-
-# Utilities
-openpyxl
