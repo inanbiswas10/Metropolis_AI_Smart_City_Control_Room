@@ -56,7 +56,7 @@ def get_status_label (value,good_max,watch_max,labels = ("Good","Moderate","Crit
 
 def inject_theme ():
 
-    # Injects fonts and CSS overrides. Call once, at the top of app/main.py. 
+    # Injects fonts and CSS overrides. Call once, at the top of app/main.py.
 
     st.markdown (
         f"""
@@ -104,12 +104,15 @@ def inject_theme ():
             border-bottom: 1px solid var(--border);
             padding-bottom: 0.9rem;
             margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }}
         .control-bar-title {{
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.3rem;
+            font-size: 2.75rem;
             font-weight: 700;
             color: var(--text-primary);
+            letter-spacing: -0.02em;
         }}
         .control-bar-meta {{
             font-family: 'JetBrains Mono', monospace;
